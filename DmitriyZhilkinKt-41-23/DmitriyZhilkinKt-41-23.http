@@ -1,0 +1,6 @@
+@DmitriyZhilkinKt_41_23_HostAddress = http://localhost:5041
+
+GET {{DmitriyZhilkinKt_41_23_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
