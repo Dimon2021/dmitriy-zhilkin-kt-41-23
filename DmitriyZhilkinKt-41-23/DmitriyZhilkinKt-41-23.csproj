@@ -21,8 +21,10 @@
   <ItemGroup>
     <Folder Include="Filters\StudentFilters\" />
     <Folder Include="Interfaces\StudentInterfaces\" />
+    <Folder Include="Interfaces\SpecialtyInterfaces\" />
     <Folder Include="ServiceExtensions\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Dto\" />
   </ItemGroup>
 
 </Project>

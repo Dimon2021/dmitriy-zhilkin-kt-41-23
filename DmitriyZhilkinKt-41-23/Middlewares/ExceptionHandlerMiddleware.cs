@@ -21,7 +21,7 @@ namespace DmitriyZhilkinKt_41_23.Middlewares
             }
             catch (Exception exception)
             {
-                // Исключение передаётся первым аргументом, чтобы в лог попал stack trace
+                
                 _logger.LogError(exception, "Unhandled exception");
 
                 var httpResponse = context.Response;
@@ -35,6 +35,14 @@ namespace DmitriyZhilkinKt_41_23.Middlewares
 
                 switch (exception)
                 {
+                    case KeyNotFoundException:
+                        
+                        httpResponse.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case ArgumentException:
+                        
+                        httpResponse.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
                     default:
                         httpResponse.StatusCode = (int)HttpStatusCode.InternalServerError;
                         responseModel.Errors = new List<string?> { exception.InnerException?.Message };

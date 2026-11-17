@@ -1,4 +1,5 @@
 using DmitriyZhilkinKt_41_23.Database;
+using DmitriyZhilkinKt_41_23.Dto;
 using DmitriyZhilkinKt_41_23.Filters.StudentFilters;
 using DmitriyZhilkinKt_41_23.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace DmitriyZhilkinKt_41_23.Interfaces.StudentInterfaces
     public interface IStudentService
     {
         public Task<Student[]> GetStudentsAsync(StudentFilter filter, CancellationToken cancellationToken);
+        public Task<int> AddStudentAsync(StudentRequest request, CancellationToken cancellationToken);
+        public Task UpdateStudentAsync(int studentId, StudentRequest request, CancellationToken cancellationToken);
+        public Task DeleteStudentAsync(int studentId, CancellationToken cancellationToken);
     }
 
-    // В учебных целях реализация лежит рядом с интерфейсом.
-    // В реальных проектах она находится в отдельном проекте с модификатором internal.
+    
     public class StudentService : IStudentService
     {
         private readonly StudentDbContext _dbContext;
@@ -48,6 +51,78 @@ namespace DmitriyZhilkinKt_41_23.Interfaces.StudentInterfaces
             }
 
             return students.AsNoTracking().ToArrayAsync(cancellationToken);
+        }
+
+        public async Task<int> AddStudentAsync(StudentRequest request, CancellationToken cancellationToken = default)
+        {
+            await ValidateAsync(request, cancellationToken);
+
+            var student = new Student
+            {
+                FirstName = request.FirstName.Trim(),
+                LastName = request.LastName.Trim(),
+                GroupId = request.GroupId
+            };
+
+            await _dbContext.Set<Student>().AddAsync(student, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return student.StudentId;
+        }
+
+        public async Task UpdateStudentAsync(int studentId, StudentRequest request, CancellationToken cancellationToken = default)
+        {
+            var student = await _dbContext.Set<Student>()
+                .FirstOrDefaultAsync(f => f.StudentId == studentId && !f.IsDeleted, cancellationToken);
+
+            if (student == null)
+            {
+                throw new KeyNotFoundException($"Студент с id {studentId} не найден");
+            }
+
+            await ValidateAsync(request, cancellationToken);
+
+            student.FirstName = request.FirstName.Trim();
+            student.LastName = request.LastName.Trim();
+            student.GroupId = request.GroupId;
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteStudentAsync(int studentId, CancellationToken cancellationToken = default)
+        {
+            var student = await _dbContext.Set<Student>()
+                .FirstOrDefaultAsync(f => f.StudentId == studentId && !f.IsDeleted, cancellationToken);
+
+            if (student == null)
+            {
+                throw new KeyNotFoundException($"Студент с id {studentId} не найден");
+            }
+
+            
+            student.IsDeleted = true;
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task ValidateAsync(StudentRequest request, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request.FirstName))
+            {
+                throw new ArgumentException("Имя студента не может быть пустым");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.LastName))
+            {
+                throw new ArgumentException("Фамилия студента не может быть пустой");
+            }
+
+            var groupExists = await _dbContext.Set<Group>()
+                .AnyAsync(a => a.GroupId == request.GroupId && !a.IsDeleted, cancellationToken);
+            if (!groupExists)
+            {
+                throw new ArgumentException($"Группа с id {request.GroupId} не найдена");
+            }
         }
     }
 }

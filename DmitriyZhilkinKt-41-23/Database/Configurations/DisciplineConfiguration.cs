@@ -24,6 +24,12 @@ namespace DmitriyZhilkinKt_41_23.Database.Configurations
                 .HasMaxLength(200)
                 .HasColumnName("name");
 
+            // 1 - гуманитарное, 2 - техническое. Для уже существующих строк в БД будет 2.
+            builder.Property(p => p.Direction)
+                .IsRequired()
+                .HasDefaultValue(DisciplineDirection.Technical)
+                .HasColumnName("direction");
+
             builder.Property(p => p.IsDeleted)
                 .IsRequired()
                 .HasDefaultValue(false)

@@ -4,6 +4,8 @@ using NLog;
 using NLog.Web;
 using DmitriyZhilkinKt_41_23.ServiceExtensions;
 using DmitriyZhilkinKt_41_23.Middlewares;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -14,7 +16,9 @@ try
     builder.Host.UseNLog();
     // Add services to the container.
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
