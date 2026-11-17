@@ -25,130 +25,161 @@ namespace DmitriyZhilkinKt_41_23.Migrations
                 {
                     b.Property<int>("DisciplineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("discipline_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DisciplineId"));
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("boolean");
+                    b.HasKey("DisciplineId")
+                        .HasName("pk_Disciplines_discipline_id");
 
-                    b.HasKey("DisciplineId");
-
-                    b.ToTable("Disciplines");
+                    b.ToTable("Disciplines", (string)null);
                 });
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Grade", b =>
                 {
                     b.Property<int>("GradeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("grade_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GradeId"));
 
                     b.Property<int>("DisciplineId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("discipline_id");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("student_id");
 
                     b.Property<int>("Value")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("value");
 
-                    b.HasKey("GradeId");
+                    b.HasKey("GradeId")
+                        .HasName("pk_Grades_grade_id");
 
-                    b.HasIndex("DisciplineId");
+                    b.HasIndex(new[] { "DisciplineId" }, "idx_grades_fk_discipline_id");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex(new[] { "StudentId" }, "idx_grades_fk_student_id");
 
-                    b.ToTable("Grades");
+                    b.ToTable("Grades", (string)null);
                 });
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Group", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("group_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GroupId"));
 
                     b.Property<int>("Course")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("name");
 
-                    b.Property<int>("SpecialityId")
-                        .HasColumnType("integer");
+                    b.Property<int>("SpecialtyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("specialty_id");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("boolean");
+                    b.HasKey("GroupId")
+                        .HasName("pk_Groups_group_id");
 
-                    b.HasKey("GroupId");
+                    b.HasIndex(new[] { "SpecialtyId" }, "idx_groups_fk_specialty_id");
 
-                    b.HasIndex("SpecialityId");
-
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
-            modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Speciality", b =>
+            modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Specialty", b =>
                 {
-                    b.Property<int>("SpecialityId")
+                    b.Property<int>("SpecialtyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("specialty_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SpecialityId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SpecialtyId"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("code");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("title");
 
-                    b.HasKey("SpecialityId");
+                    b.HasKey("SpecialtyId")
+                        .HasName("pk_Specialtys_specialty_id");
 
-                    b.ToTable("Specialties");
+                    b.ToTable("Specialtys", (string)null);
                 });
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("student_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("first_name");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("group_id");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("last_name");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("boolean");
+                    b.HasKey("StudentId")
+                        .HasName("pk_Students_student_id");
 
-                    b.HasKey("StudentId");
+                    b.HasIndex(new[] { "GroupId" }, "idx_students_fk_group_id");
 
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Grade", b =>
@@ -157,13 +188,15 @@ namespace DmitriyZhilkinKt_41_23.Migrations
                         .WithMany("Grades")
                         .HasForeignKey("DisciplineId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_grades_discipline_id");
 
                     b.HasOne("DmitriyZhilkinKt_41_23.Models.Student", "Student")
                         .WithMany("Grades")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_grades_student_id");
 
                     b.Navigation("Discipline");
 
@@ -172,13 +205,14 @@ namespace DmitriyZhilkinKt_41_23.Migrations
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Group", b =>
                 {
-                    b.HasOne("DmitriyZhilkinKt_41_23.Models.Speciality", "Speciality")
+                    b.HasOne("DmitriyZhilkinKt_41_23.Models.Specialty", "Specialty")
                         .WithMany("Groups")
-                        .HasForeignKey("SpecialityId")
+                        .HasForeignKey("SpecialtyId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_groups_specialty_id");
 
-                    b.Navigation("Speciality");
+                    b.Navigation("Specialty");
                 });
 
             modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Student", b =>
@@ -187,7 +221,8 @@ namespace DmitriyZhilkinKt_41_23.Migrations
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_students_group_id");
 
                     b.Navigation("Group");
                 });
@@ -202,7 +237,7 @@ namespace DmitriyZhilkinKt_41_23.Migrations
                     b.Navigation("Students");
                 });
 
-            modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Speciality", b =>
+            modelBuilder.Entity("DmitriyZhilkinKt_41_23.Models.Specialty", b =>
                 {
                     b.Navigation("Groups");
                 });

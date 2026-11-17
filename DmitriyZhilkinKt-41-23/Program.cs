@@ -2,6 +2,7 @@ using DmitriyZhilkinKt_41_23.Database;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
+using DmitriyZhilkinKt_41_23.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -19,6 +20,8 @@ try
 
     builder.Services.AddDbContext<StudentDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddServices();
 
     var app = builder.Build();
     
