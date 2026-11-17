@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using DmitriyZhilkinKt_41_23.ServiceExtensions;
+using DmitriyZhilkinKt_41_23.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -24,7 +25,7 @@ try
     builder.Services.AddServices();
 
     var app = builder.Build();
-    
+    app.UseMiddleware<ExceptionHandlerMiddleware>();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {

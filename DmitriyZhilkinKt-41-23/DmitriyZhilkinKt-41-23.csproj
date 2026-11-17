@@ -22,6 +22,7 @@
     <Folder Include="Filters\StudentFilters\" />
     <Folder Include="Interfaces\StudentInterfaces\" />
     <Folder Include="ServiceExtensions\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>

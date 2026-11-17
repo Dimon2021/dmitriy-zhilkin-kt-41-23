@@ -21,6 +21,7 @@ namespace DmitriyZhilkinKt_41_23.Controllers
         [HttpPost("GetStudents")]
         public async Task<IActionResult> GetStudentsAsync(StudentFilter filter, CancellationToken cancellationToken = default)
         {
+            //throw new Exception("Тестовая ошибка");
             var students = await _studentService.GetStudentsAsync(filter, cancellationToken);
 
             return Ok(students);
